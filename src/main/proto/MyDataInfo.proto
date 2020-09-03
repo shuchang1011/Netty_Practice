@@ -1,0 +1,32 @@
+syntax = "proto3";  //规定协议类型
+option optimize_for = SPEED;  //加快解析
+option java_package = "cn.com.agree.netty.codec";  //指定解析生成的java文件的保存路径
+option java_outer_classname = "MyDataInfo";  //生成的java外部类的文件名
+
+
+message MyMessage {
+  enum DataType {
+    StudentType = 0;  //proto3中规定从0开始计算，0代表student，1代表teacher
+    TeacherType = 1;  //后面我们可以通过这两个枚举类型来区别是student还是teacher
+  }
+
+  DataType dataType = 1;  //1代表是这个内部类的第一个属性
+
+  oneof DataBody {  //oneof的作用是规定每次只能获取到两个定义的内部类的一个，可以节省空间
+    Student student = 2;  //2，3代表内部类的第二，三个属性
+    Teacher teacher = 3;
+  }
+
+}
+
+//定义一个内部类,这个内部类才是通过tcp传递的实体类
+message Student {
+  //语法指南：https://developers.google.com/protocol-buffers/docs/proto
+  int32 age = 1;  //1,2代表属性序号
+  string name = 2;
+}
+
+message Teacher {
+  int32 age = 1;  //1,2代表属性序号
+  string name = 2;
+}
